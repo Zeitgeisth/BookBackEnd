@@ -9,9 +9,6 @@ const RegisterSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    middleName: {
-        type:String
-    },
     lastName:{
         type:String,
         required:true
@@ -28,11 +25,7 @@ const RegisterSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    dob:{
-        type:String,
-        required:true
-    },
-    gender:{
+    location:{
         type:String,
         required:true
     },
@@ -52,13 +45,11 @@ const RegisterUser = mongoose.model('Register', RegisterSchema);
 function validateRegister(user){
     const schema = {
         firstName: Joi.string().min(3).max(30).required(),
-        middleName: Joi.string().min(3).max(30),
         lastName: Joi.string().min(3).max(30).required(),
         email: Joi.string().min(5).max(30).required().email(),
         password: Joi.string().min(5).max(300).required(),
         phone: Joi.number().integer().required(),
-        dob: Joi.string().required(),
-        gender: Joi.string().required()
+        location: Joi.string().required()
     };
     return Joi.validate(user, schema);
 }

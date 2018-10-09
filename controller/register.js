@@ -21,12 +21,11 @@ api.post('/newUser', async (req,res)=>{
         let newUserRegister = new RegisterUser({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            middleName: req.body.middleName,
             password: req.body.password,
             email: req.body.email,
-            dob: req.body.dob,
             phone:req.body.phone,
-            gender:req.body.gender
+            location:req.body.location
+           
         });
          const salt = await bcrypt.genSalt(10);
          newUserRegister.password = await bcrypt.hash(req.body.password, salt);

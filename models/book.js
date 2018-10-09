@@ -30,7 +30,7 @@ function validateBookRegister(user){
         BookName:joi.string().min(3).max(20).required(),
         Genre:joi.string().min(3).max(20).required(),
         Cost:joi.string().min(3).max(10).required(),
-        Images:joi.string()
+        Images:joi.string().required()
     }
     return joi.validate(user,schema);
 
