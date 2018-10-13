@@ -19,8 +19,12 @@ const BookSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    UserId:{type:mongoose.Schema.Types.ObjectId, ref: 'RegisterUser'}
-   
+    Description:{
+        type:String,
+        required:true
+    },
+    UserId:{type:mongoose.Schema.Types.ObjectId, ref: 'RegisterUser'},
+    UserFav:[{type:mongoose.Schema.Types.ObjectId, ref: 'RegisterUser'}]
 });
 
 const RegisterBook = mongoose.model('RegisterBook',BookSchema);
@@ -30,7 +34,8 @@ function validateBookRegister(user){
         BookName:joi.string().min(3).max(20).required(),
         Genre:joi.string().min(3).max(20).required(),
         Cost:joi.string().min(3).max(10).required(),
-        Images:joi.string().required()
+        Images:joi.string().required(),
+        Description:joi.string().required()
     }
     return joi.validate(user,schema);
 

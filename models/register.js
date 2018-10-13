@@ -31,6 +31,9 @@ const RegisterSchema = new mongoose.Schema({
     },
     books:[{
         type:mongoose.Schema.Types.ObjectId, ref:RegisterBook
+    }],
+    favouriteBooks:[{
+        type:mongoose.Schema.Types.ObjectId, ref:RegisterBook
     }]
 });
 

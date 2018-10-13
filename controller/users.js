@@ -5,7 +5,7 @@ const {RegisterUser} = require('../models/register');
 const api = Router();
 
 api.get('/me', auth, async( req, res)=>{
-    const user = await RegisterUser.findById(req.user._id).select('-password -books');
+    const user = await RegisterUser.findById(req.user._id).select('-password');
     console.log(user);
     res.send(user);
 });

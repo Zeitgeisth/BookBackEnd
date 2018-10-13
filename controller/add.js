@@ -10,12 +10,10 @@ const fs = require('fs');
 
 const api = Router();
 api.post('/Book',auth, async (req,res)=>{
-      //console.log(req.file);
-      //console.log((req.body));
       const {error} = validateBookRegister(req.body);
       if(error) return res.status(400).send(error.details[0].message);
 
-      let book = new RegisterBook(_.pick(req.body, ['BookName','Genre','Cost']));
+      let book = new RegisterBook(_.pick(req.body, ['BookName','Genre','Cost','Description']));
       book.UserId = req.user._id;
 
       let modBook = await RegisterUser.findById(req.user._id);
@@ -30,5 +28,30 @@ api.post('/Book',auth, async (req,res)=>{
 
     
 });
+
+ api.post('/Favourites',auth, async(req,res)=>{
+       const book = await RegisterBook.findById(req.body.id);
+       let exist = false;
+       let user = await RegisterUser.findById(req.user._id);
+       const totalfav = user.favouriteBooks;
+       for(let i = 0; i<totalfav.length; i++){
+            if(totalfav[i] == req.body.id) exist = true;
+       }
+       if(exist) {
+            res.status(400).send("Favourites is already listed");
+       } 
+
+       else{
+            user.favouriteBooks.push(book);
+            book.UserFav = req.user._id;
+            book.save();
+            const success = user.save();
+
+            if(success) res.status(200).send("Favourites saved");
+
+       }
+
+       
+ });
 
 module.exports = api;
