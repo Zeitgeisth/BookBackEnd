@@ -52,7 +52,8 @@ function validateRegister(user){
         email: Joi.string().min(5).max(30).required().email(),
         password: Joi.string().min(5).max(300).required(),
         phone: Joi.number().integer().required(),
-        location: Joi.string().required()
+        location: Joi.string().required(),
+        
     };
     return Joi.validate(user, schema);
 }

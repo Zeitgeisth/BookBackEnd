@@ -24,9 +24,31 @@ api.post('/Book',auth, async (req,res)=>{
       book.Images=req.user._id+req.body.BookName+".jpg";
       modBook.save();
      const success = await book.save();
-      if(success) res.status(200).send('Book Successfully saved');
+      if(success) res.status(200).send('Book Successfully saved');    
+});
 
-    
+api.put('/EditBook',auth, async (req, res)=>{
+     const {error} = validateBookRegister(req.body);
+     if(error) return res.status(400).send(error.details[0].message);
+
+     let book = RegisterBook.findById(req.body.id);
+     console.log(book);
+     const delpath = `${__dirname}/../uploads/${req.user._id}${book.BookName}.jpg`;
+     fs.unlink(delpath, function(err){});
+     
+     book.BookName = req.body.BookName;
+     book.Genre = req.body.Genre;
+     book.Cost = req.body.Cost;
+     book.Description = req.body.Description;
+
+     const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}.jpg`;
+     fs.writeFile(path, new Buffer(req.body.Images, "base64"), function(err) {});
+
+     book.Images=req.user._id+req.body.BookName+".jpg";
+     const success = await book.save();
+      if(success) res.status(200).send('Book Edited saved'); 
+
+
 });
 
  api.post('/Favourites',auth, async(req,res)=>{

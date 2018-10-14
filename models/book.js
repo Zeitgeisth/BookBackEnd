@@ -35,7 +35,8 @@ function validateBookRegister(user){
         Genre:joi.string().min(3).max(20).required(),
         Cost:joi.string().min(3).max(10).required(),
         Images:joi.string().required(),
-        Description:joi.string().required()
+        Description:joi.string().required(),
+        id:joi.string()
     }
     return joi.validate(user,schema);
 
