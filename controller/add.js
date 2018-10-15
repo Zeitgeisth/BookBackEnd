@@ -13,15 +13,15 @@ api.post('/Book',auth, async (req,res)=>{
       const {error} = validateBookRegister(req.body);
       if(error) return res.status(400).send(error.details[0].message);
 
-      let book = new RegisterBook(_.pick(req.body, ['BookName','Genre','Cost','Description']));
+      let book = new RegisterBook(_.pick(req.body, ['BookName','Genre','Cost','Description','ImageFlag']));
       book.UserId = req.user._id;
 
       let modBook = await RegisterUser.findById(req.user._id);
       modBook.books.push(book);
-      const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}.jpg`;
+      const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}${req.body.ImageFlag}.jpg`;
       fs.writeFile(path, new Buffer(req.body.Images, "base64"), function(err) {});
     
-      book.Images=req.user._id+req.body.BookName+".jpg";
+      book.Images=req.user._id+req.body.BookName+req.body.ImageFlag+".jpg";
       modBook.save();
      const success = await book.save();
       if(success) res.status(200).send('Book Successfully saved');    
@@ -31,20 +31,29 @@ api.put('/EditBook',auth, async (req, res)=>{
      const {error} = validateBookRegister(req.body);
      if(error) return res.status(400).send(error.details[0].message);
 
-     let book = RegisterBook.findById(req.body.id);
+     let book = await RegisterBook.findById(req.body.id);
      console.log(book);
-     const delpath = `${__dirname}/../uploads/${req.user._id}${book.BookName}.jpg`;
-     fs.unlink(delpath, function(err){});
+     const delpath = `${__dirname}/../uploads/${book.Images}`;
+     const im = book.Images;
      
      book.BookName = req.body.BookName;
      book.Genre = req.body.Genre;
      book.Cost = req.body.Cost;
      book.Description = req.body.Description;
+     book.ImageFlag = req.body.ImageFlag;
 
-     const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}.jpg`;
-     fs.writeFile(path, new Buffer(req.body.Images, "base64"), function(err) {});
+     const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}${req.body.ImageFlag}.jpg`;
 
-     book.Images=req.user._id+req.body.BookName+".jpg";
+     
+     console.log(im);
+     if(req.body.Images != im){
+      fs.unlink(delpath, function(err){});
+      fs.writeFile(path, new Buffer(req.body.Images, "base64"), function(err) {});
+      console
+      book.Images=req.user._id+req.body.BookName+req.body.ImageFlag+".jpg";
+     }
+     
+    
      const success = await book.save();
       if(success) res.status(200).send('Book Edited saved'); 
 

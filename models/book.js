@@ -23,6 +23,10 @@ const BookSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    ImageFlag:{
+            type:String,
+            required:true
+    },
     UserId:{type:mongoose.Schema.Types.ObjectId, ref: 'RegisterUser'},
     UserFav:[{type:mongoose.Schema.Types.ObjectId, ref: 'RegisterUser'}]
 });
@@ -36,7 +40,8 @@ function validateBookRegister(user){
         Cost:joi.string().min(3).max(10).required(),
         Images:joi.string().required(),
         Description:joi.string().required(),
-        id:joi.string()
+        id:joi.string(),
+        ImageFlag:joi.string()
     }
     return joi.validate(user,schema);
 
