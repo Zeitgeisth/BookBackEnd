@@ -44,8 +44,6 @@ api.put('/EditBook',auth, async (req, res)=>{
 
      const path = `${__dirname}/../uploads/${req.user._id}${req.body.BookName}${req.body.ImageFlag}.jpg`;
 
-     
-     console.log(im);
      if(req.body.Images != im){
       fs.unlink(delpath, function(err){});
       fs.writeFile(path, new Buffer(req.body.Images, "base64"), function(err) {});
