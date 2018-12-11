@@ -3,6 +3,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const {RegisterBook} = require('../models/book');
+const {Chat} = require('../models/chat');
 
 const RegisterSchema = new mongoose.Schema({
     firstName: {
@@ -34,7 +35,11 @@ const RegisterSchema = new mongoose.Schema({
     }],
     favouriteBooks:[{
         type:mongoose.Schema.Types.ObjectId, ref:RegisterBook
+    }],
+    wholeChat:[{
+        type:mongoose.Schema.Types.ObjectId, ref:Chat
     }]
+
 });
 
 RegisterSchema.methods.generateAuthToken = function(){

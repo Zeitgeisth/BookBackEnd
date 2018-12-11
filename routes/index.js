@@ -6,6 +6,7 @@ const homePage = require('../controller/homepage');
 const add = require('../controller/add');
 const users = require('../controller/users');
 const books = require('../controller/books');
+const message = require('../controller/message');
 
 
 
@@ -18,6 +19,7 @@ router.use('/HomePage',homePage);
 router.use('/Add',add);
 router.use('/Users',users);
 router.use('/Books',books);
+router.use('/getMsg',message);
 
 module.exports = router;
 
