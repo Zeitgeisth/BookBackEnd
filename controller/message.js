@@ -6,7 +6,17 @@ const api = Router();
 
 api.post('/message',auth, async(req,res)=>{
     const msg = await Chat.find({registerId:req.body.ID});
-    res.status(200).send(msg);
+
+    const count = await Chat.find({registerId:req.body.ID}).count();
+    console.log(count);
+    if(count==0){
+     console.log('Empty Chat');
+     return res.status(400).send("Empty chat");
+    } 
+    else {
+        res.status(200).send(msg);
+        console.log("abcde");  
+      }
 });
 
 api.post('/getOneMessage',auth, async(req,res)=>{
